@@ -9,7 +9,7 @@
 #endif
 #include <vector>
 #include <sstream>
-#include<string>
+#include <string>
 #include "cube.h"
 #include "chariot.h"
 #include "courbe.h"
@@ -61,6 +61,8 @@ float angleRotationChariot = 0;
 float chariotRotationX = 0;
 float chariotRotationY = 0;
 float chariotRotationZ = 0;
+double G = 9.81;
+vector<double> vitesse_init = {1.0, 1.0, 1.0};
 
 //----------------------------------------------------------------------------------
 void initMesh()
@@ -111,10 +113,16 @@ void initOpenGl()
 void animation(int numTimer) {
 //----------------------------------------------------------------------------------
     int temps = 1000;  // Le temps que va mettre l'animation à afficher la prochaine frame (possible à recalculer)
+
     
     //**********************************************************************
     // Traitement pour l'animation
     //**********************************************************************
+
+    
+
+
+
 
     cout << "Fonction animation lancée" << endl;
     
