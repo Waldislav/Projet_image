@@ -52,7 +52,36 @@ Cube cube;
 
 // Nécessaire à la construction du roller coaster
 Chariot chariot;
-Courbe courbe;
+std::vector<std::vector<Point>> pointsDeControle1 = {
+        {{-5, -5, -5}, {-5, 10, 0}, {-5, -5, 5}},
+        {{0, -5, -5}, {0, 10, 0}, {0, -5, 5}},
+        {{5, -5, -5}, {5, 10, 0}, {5, -5, 5}}
+    };
+std::vector<std::vector<Point>> pointsDeControle2 = {
+        {{-5, -5, 5}, {-5, -35, 12}, {-5, -20, 17}},
+        {{0, -5, 5}, {0, -35, 12}, {0, -20, 17}},
+        {{5, -5, 5}, {5, -35, 12}, {5, -20, 17}}
+    };
+std::vector<std::vector<Point>> pointsDeControle3 = {
+        {{5, -5, -5}, {5, -20, -10}, {5, -5, -15}},
+        {{0, -5, -5}, {0, -20, -10}, {0, -5, -15}},
+        {{-5, -5, -5}, {-5, -20, -10}, {-5, -5, -15}}
+    };
+std::vector<std::vector<Point>> pointsDeControle4 = {
+        {{-5, -20, 17}, {-5, 15, 25}, {-5, 3, 32}},
+        {{0, -20, 17}, {0, 15, 25}, {0, 3, 32}},
+        {{5, -20, 17}, {5, 15, 25}, {5, 3, 32}}
+    };
+std::vector<std::vector<Point>> pointsDeControle5 = {
+        {{5, -5, -15}, {5, 15, -20}, {5, 15, -30}},
+        {{0, -5, -15}, {0, 15, -20}, {0, 15, -30}},
+        {{-5, -5, -15}, {-5, 15, -20}, {-5, 15, -30}}
+    };
+Courbe courbe1(pointsDeControle1);
+Courbe courbe2(pointsDeControle2);
+Courbe courbe3(pointsDeControle3);
+Courbe courbe4(pointsDeControle4);
+Courbe courbe5(pointsDeControle5);
 Rail* rail;
 Point* ptsCourbe;
 
@@ -69,7 +98,7 @@ void initMesh()
 //----------------------------------------------------------------------------------
 {
     // Initialisation de nos objets
-    courbe.construire(ptsCourbe);
+    courbe1.construire();
     rail = new Rail(ptsCourbe);
 }
 
@@ -209,6 +238,11 @@ void affichage(void)
         glPushMatrix();
             glTranslatef(ptCentreChariot.x, ptCentreChariot.y, ptCentreChariot.z);
             cube.construire();
+            courbe1.construire();
+            courbe2.construire();
+            courbe3.construire();
+            courbe4.construire();
+            courbe5.construire();
         glPopMatrix();
         
         // Construction chariot
