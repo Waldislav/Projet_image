@@ -102,6 +102,10 @@ void initMesh()
 {
     // Initialisation de nos objets
     courbe1.construire();
+    courbe2.construire();
+    courbe3.construire();
+    courbe4.construire();
+    courbe5.construire();
     rail = new Rail();
     ptsCourbe = courbe1.generateCurvePoints();
     rail->setPoints(ptsCourbe);
