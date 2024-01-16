@@ -244,15 +244,15 @@ void animation(int value) {
     printf("accelerationX = %f, accelerationY = %f, accelerationZ = %f\n", accelerationX, accelerationY, accelerationZ);
 
     // Modifier la vitesse du chariot en fonction de l'accélération
-    velocityX += accelerationX * 0.01;
-    velocityY += accelerationY * 0.01;
-    velocityZ += accelerationZ * 0.01;
+    velocityX += accelerationX * pas;
+    velocityY += accelerationY * pas;
+    velocityZ += accelerationZ * pas;
     printf("velocityX = %f, velocityY = %f, velocityZ = %f\n", velocityX, velocityY, velocityZ);
 
     // Modifier la position du chariot en fonction de la vitesse
-    ptCentreChariot.x = ptsCourbe[value].x + velocityX * 0.01;
-    ptCentreChariot.y = ptsCourbe[value].y + 0.75 + velocityY * 0.01;
-    ptCentreChariot.z = ptsCourbe[value].z + velocityZ * 0.01;
+    ptCentreChariot.x = ptsCourbe[value].x + velocityX * pas;
+    ptCentreChariot.y = ptsCourbe[value].y + 0.75 + velocityY * pas;
+    ptCentreChariot.z = ptsCourbe[value].z + velocityZ * pas;
     
 
 
