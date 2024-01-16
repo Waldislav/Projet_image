@@ -1,4 +1,4 @@
-CCC=g++
+CCC=g++ -std=c++11 
 UNAME := $(shell uname)
 CFLAGS=-Wall -I/urs/local/include
 CFLAGS=

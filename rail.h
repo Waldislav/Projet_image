@@ -3,7 +3,12 @@
 #include <string>
 #include "point.h"
 #include <vector>
-#include <GL/gl.h>
+#ifdef __APPLE__
+    #define GL_SILENCE_DEPRECATION
+    #include <GLUT/glut.h>
+#else
+    #include <GL/glut.h>
+#endif
 #include "point.h"
 
 //#include <GL/glut.h>
