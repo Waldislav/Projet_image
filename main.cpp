@@ -196,7 +196,6 @@ void animation(int value) {
     //**********************************************************************
     // Traitement pour l'animation
     //**********************************************************************
-<<<<<<< HEAD
 
     // Déplacement du chariot sur la courbe en prenant en compte la gravité
     if(value >= ptsCourbe.size() - 3) {
@@ -257,12 +256,10 @@ void animation(int value) {
     
 
 
-=======
     indexPoint++;
-    ptCentreChariot = {ptsCourbe[indexPoint].x,ptsCourbe[indexPoint].y,ptsCourbe[indexPoint].z};
+    //ptCentreChariot = {ptsCourbe[indexPoint].x,ptsCourbe[indexPoint].y,ptsCourbe[indexPoint].z};
     rotation();
     camera();
->>>>>>> rotation
 
 
     cout << "Fonction animation lancée" << endl;
@@ -352,14 +349,10 @@ void affichage(void)
         // Place un cube de test
         glPushMatrix();
             glTranslatef(ptCentreChariot.x, ptCentreChariot.y, ptCentreChariot.z);
-<<<<<<< HEAD
-            chariot.construire();
             courbe1.construire();
-=======
             glRotatef(angleRotationChariot,chariotRotationX,chariotRotationY,chariotRotationZ);
             cube.construire();
             //courbe1.construire();
->>>>>>> rotation
             //courbe2.construire();
             //courbe3.construire();
             //courbe4.construire();
