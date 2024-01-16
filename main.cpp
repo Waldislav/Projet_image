@@ -15,6 +15,7 @@
 #include "courbe.h"
 #include "rail.h"
 #include "point.h"
+#include "courbeBezier.h"
 
 using namespace std ;
 void affichage(void);
@@ -80,7 +81,7 @@ std::vector<std::vector<Point>> pointsDeControle5 = {
     };
 Courbe courbe1(pointsDeControle1);
 Courbe courbe2(pointsDeControle2);
-Courbe courbe3(pointsDeControle3);
+Courbe courbe3(pointsDeControle3);sudo gdebi GitHubDesktop-linux-3.1.1-linux1.deb
 Courbe courbe4(pointsDeControle4);
 Courbe courbe5(pointsDeControle5);
 */
@@ -242,7 +243,7 @@ void affichage(void)
         // Place un cube de test
         glPushMatrix();
             glTranslatef(ptCentreChariot.x, ptCentreChariot.y, ptCentreChariot.z);
-            cube.construire();
+            chariot.construire();
             courbe1.construire();
             //courbe2.construire();
             //courbe3.construire();
