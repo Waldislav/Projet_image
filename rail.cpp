@@ -23,8 +23,8 @@ Rail::Rail(double tubeRadius, double spaceBetweenRails, const std::vector<Point>
     : tubeRadius(tubeRadius), spaceBetweenRails(spaceBetweenRails), curvePoints(curvePoints) {}
 
 Rail::Rail() {
-    tubeRadius = 0.03;
-    spaceBetweenRails = 0.15;
+    tubeRadius = 0.09;
+    spaceBetweenRails = 0.40;
 }
 
 
@@ -75,7 +75,7 @@ void Rail::drawRail(double radius, int numSides) {
         drawCylinderBetweenPoints(pRailDroit1, pRailDroit2, radius, numSides, r, g, b);
 
         //dessiner un cylindre entre les deux points tous les 10 points
-        if (distance >= 0.1) {
+        if (distance >= 0.3) {
             // Couleur bois
             int red_2 = 139;    
             int green_2 = 69;  
