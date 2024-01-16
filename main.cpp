@@ -52,6 +52,7 @@ Cube cube;
 
 // Nécessaire à la construction du roller coaster
 Chariot chariot;
+/*
 std::vector<std::vector<Point>> pointsDeControle1 = {
         {{-5, -5, -5}, {-5, 10, 0}, {-5, -5, 5}},
         {{0, -5, -5}, {0, 10, 0}, {0, -5, 5}},
@@ -82,8 +83,10 @@ Courbe courbe2(pointsDeControle2);
 Courbe courbe3(pointsDeControle3);
 Courbe courbe4(pointsDeControle4);
 Courbe courbe5(pointsDeControle5);
+*/
+CourbeBezier courbe1;
 Rail* rail;
-Point* ptsCourbe;
+std::vector<Point> ptsCourbe;
 
 Point ptCentreChariot(0.,0.,0.);
 float angleRotationChariot = 0;
@@ -99,7 +102,9 @@ void initMesh()
 {
     // Initialisation de nos objets
     courbe1.construire();
-    rail = new Rail(ptsCourbe);
+    rail = new Rail();
+    ptsCourbe = courbe1.generateCurvePoints();
+    rail->setPoints(ptsCourbe);
 }
 
 
@@ -239,10 +244,10 @@ void affichage(void)
             glTranslatef(ptCentreChariot.x, ptCentreChariot.y, ptCentreChariot.z);
             cube.construire();
             courbe1.construire();
-            courbe2.construire();
-            courbe3.construire();
-            courbe4.construire();
-            courbe5.construire();
+            //courbe2.construire();
+            //courbe3.construire();
+            //courbe4.construire();
+            //courbe5.construire();
         glPopMatrix();
         
         // Construction chariot

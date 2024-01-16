@@ -10,7 +10,7 @@ else
 	LDFLAGS= -lGL -lGLU -lglut  -lm
 endif
 
-SRC=cube.cpp chariot.cpp courbe.cpp rail.cpp main.cpp
+SRC=cube.cpp chariot.cpp courbe.cpp rail.cpp main.cpp courbeBezier.cpp
 DEBUBFLAG=-g
 
 OBJ= $(SRC:.cpp=.o)
