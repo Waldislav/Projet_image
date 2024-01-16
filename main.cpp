@@ -251,7 +251,7 @@ void animation(int value) {
 
     // Modifier la position du chariot en fonction de la vitesse
     ptCentreChariot.x = ptsCourbe[value].x + velocityX * 0.01;
-    ptCentreChariot.y = ptsCourbe[value].y + velocityY * 0.01;
+    ptCentreChariot.y = ptsCourbe[value].y + 0.75 + velocityY * 0.01;
     ptCentreChariot.z = ptsCourbe[value].z + velocityZ * 0.01;
     
 
@@ -265,7 +265,7 @@ void animation(int value) {
     cout << "Fonction animation lancée" << endl;
     
     //**********************************************************************
-    
+    glutTimerFunc(16, animation, value + 1 );
     glutPostRedisplay();
     // QuitteAnim permet de vérifier si on relance la fonction animation ou pas
     if(!quitteAnim) glutTimerFunc(16, animation, 0 );
