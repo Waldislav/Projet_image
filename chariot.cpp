@@ -8,8 +8,8 @@
 #include <iostream>
 #include <string>
 #include <cmath>
-#include <jpeglib.h>
-#include <jerror.h>
+//#include <jpeglib.h>
+//#include <jerror.h>
 
 GLuint texObject;  // Identifiant de la texture
 
