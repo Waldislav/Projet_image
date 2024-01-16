@@ -93,8 +93,17 @@ float angleRotationChariot = 0;
 float chariotRotationX = 0;
 float chariotRotationY = 0;
 float chariotRotationZ = 0;
-double G = 9.81;
-vector<double> vitesse_init = {1.0, 1.0, 1.0};
+float t = 0.0f;
+float pas = 0.01f; // delta t
+float gravity = -9.8f; // gravité
+//vitesse initiale
+float velocityX = 0.0f;
+float velocityY = 0.0f;
+float velocityZ = 0.0f;
+//accélération initiale
+float accelerationX = 0.0f;
+float accelerationY = 0.0f;
+float accelerationZ = 0.0f;
 
 //----------------------------------------------------------------------------------
 void initMesh()
@@ -148,7 +157,7 @@ void initOpenGl()
 
 // Fonction pour l'animation (le paramètre est obligatoire pour lancer glutTimerFunc)
 //----------------------------------------------------------------------------------
-void animation(int numTimer) {
+void animation(int value) {
 //----------------------------------------------------------------------------------
     int temps = 1000;  // Le temps que va mettre l'animation à afficher la prochaine frame (possible à recalculer)
 
@@ -157,6 +166,62 @@ void animation(int numTimer) {
     // Traitement pour l'animation
     //**********************************************************************
 
+    // Déplacement du chariot sur la courbe en prenant en compte la gravité
+    if(value >= ptsCourbe.size() - 3) {
+        return;
+    }
+
+    // Calcul du vecteur tangente à la courbe
+    float tx = 3*pow(1-t, 2)*(ptsCourbe[value+1].x-ptsCourbe[value].x) + 6*t*(1-t)*(ptsCourbe[value+2].x-ptsCourbe[value+1].x) + 3*pow(t, 2)*(ptsCourbe[value+3].x-ptsCourbe[value+2].x);
+    float ty = 3*pow(1-t, 2)*(ptsCourbe[value+1].y-ptsCourbe[value].y) + 6*t*(1-t)*(ptsCourbe[value+2].y-ptsCourbe[value+1].y) + 3*pow(t, 2)*(ptsCourbe[value+3].y-ptsCourbe[value+2].y);
+    float tz = 3*pow(1-t, 2)*(ptsCourbe[value+1].z-ptsCourbe[value].z) + 6*t*(1-t)*(ptsCourbe[value+2].z-ptsCourbe[value+1].z) + 3*pow(t, 2)*(ptsCourbe[value+3].z-ptsCourbe[value+2].z);
+    //printf("tx = %f, ty = %f, tz = %f\n", tx, ty, tz);
+
+    // Normalisez le vecteur tangente
+    float norme = sqrt(pow(tx, 2) + pow(ty, 2) + pow(tz, 2));
+    tx /= norme;
+    ty /= norme;
+    tz /= norme;
+
+    // Calculez la vitesse du chariot en fonction de la tangente
+    float velocityXprime = tx * velocityX;
+    float velocityYprime = ty * velocityY;
+    float velocityZprime = tz * velocityZ;
+
+    // Calculez l'accélération du chariot en fonction de la tangente
+    float accelerationXtan = (velocityXprime - velocityX) / 0.01;
+    float accelerationYtan = (velocityYprime - velocityY) / 0.01;
+    float accelerationZtan = (velocityZprime - velocityZ) / 0.01;
+
+    // Calculez l'accélération du chariot en fonction de la gravité
+    float accelerationXgrav = 0.0f;
+    float accelerationYgrav = gravity;
+    float accelerationZgrav = 0.0f;
+
+    // Produit scalaire entre la tangente et la gravité
+    float produitScalaire = tx * accelerationXgrav + ty * accelerationYgrav + tz * accelerationZgrav;
+
+    // Calculez l'accélération du chariot en fonction de la réaction
+    float accelerationXreact = -produitScalaire * tx;
+    float accelerationYreact = -produitScalaire * ty;
+    float accelerationZreact = -produitScalaire * tz;
+
+    // Calculez l'accélération totale du chariot
+    accelerationX = accelerationXtan + accelerationXgrav + accelerationXreact;
+    accelerationY = accelerationYtan + accelerationYgrav + accelerationYreact;
+    accelerationZ = accelerationZtan + accelerationZgrav + accelerationZreact;
+    printf("accelerationX = %f, accelerationY = %f, accelerationZ = %f\n", accelerationX, accelerationY, accelerationZ);
+
+    // Modifier la vitesse du chariot en fonction de l'accélération
+    velocityX += accelerationX * 0.01;
+    velocityY += accelerationY * 0.01;
+    velocityZ += accelerationZ * 0.01;
+    printf("velocityX = %f, velocityY = %f, velocityZ = %f\n", velocityX, velocityY, velocityZ);
+
+    // Modifier la position du chariot en fonction de la vitesse
+    ptCentreChariot.x = ptsCourbe[value].x + velocityX * 0.01;
+    ptCentreChariot.y = ptsCourbe[value].y + velocityY * 0.01;
+    ptCentreChariot.z = ptsCourbe[value].z + velocityZ * 0.01;
     
 
 
@@ -168,7 +233,7 @@ void animation(int numTimer) {
     
     glutPostRedisplay();
     // QuitteAnim permet de vérifier si on relance la fonction animation ou pas
-    if(!quitteAnim) glutTimerFunc(temps, animation, 1 );
+    if(!quitteAnim) glutTimerFunc(16, animation, 0 );
 }
 
 
@@ -197,6 +262,8 @@ int main(int argc,char **argv)
     glutMotionFunc(mouseMotion);
     
     initOpenGl() ;
+
+    glutTimerFunc(16, animation, 0); // commence l'animation
 
     /* Entree dans la boucle principale glut */
     glutMainLoop();
