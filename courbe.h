@@ -28,9 +28,6 @@ class Courbe
 
     void construire();
 
-    const vector<Point>& getPtsCourbe() const {
-        return surfacePoints;
-
     // Fonction pour initializer une matrice
     double **create2DArray(unsigned height, unsigned width);
 
@@ -47,9 +44,5 @@ class Courbe
 
 
 };
-
-
-
-
 
 #endif

@@ -8,8 +8,11 @@
 #include <iostream>
 #include <string>
 
-//using namespace arma;
+
 using namespace std;
+
+
+//using namespace arma;
 
 Courbe::Courbe()
 {
