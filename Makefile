@@ -20,10 +20,10 @@ EXEC=main
 all: $(EXEC)
 
 main: $(OBJ)
-		$(CCC) -g -o $(BIN)$@ $^ $(LDFLAGS)
+		$(CCC) -std=c++11 -g -o $(BIN)$@ $^ $(LDFLAGS)
 
 %.o: %.cpp point.h
-		$(CCC) -g -o $@ -c $< $(CFLAGS)
+		$(CCC) -std=c++11 -g -o $@ -c $< $(CFLAGS)
 
 
 clean:

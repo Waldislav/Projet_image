@@ -8,7 +8,6 @@
 #include <iostream>
 #include <string>
 #include <cmath>
- #include <GL/glut.h>
 
  #define PI 3.1415927
 

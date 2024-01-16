@@ -9,12 +9,15 @@
 #endif
 #include <vector>
 #include <sstream>
+#include <time.h>
 #include <string>
+#include <cmath>
 #include "cube.h"
 #include "chariot.h"
 #include "courbe.h"
 #include "rail.h"
 #include "point.h"
+#include "courbeBezier.h"
 
 using namespace std ;
 void affichage(void);
@@ -96,6 +99,7 @@ float chariotRotationZ = 0;
 double G = 9.81;
 vector<double> vitesse_init = {1.0, 1.0, 1.0};
 
+int indexPoint = 0;
 //----------------------------------------------------------------------------------
 void initMesh()
 //----------------------------------------------------------------------------------
@@ -105,6 +109,7 @@ void initMesh()
     rail = new Rail();
     ptsCourbe = courbe1.generateCurvePoints();
     rail->setPoints(ptsCourbe);
+    ptCentreChariot = {ptsCourbe[0].x,ptsCourbe[0].y,ptsCourbe[0].z};
 }
 
 
@@ -141,21 +146,51 @@ void initOpenGl()
     //  glTranslatef(0.0,0.0,-5.0);
 }
 
+void normalizeVector(Point vec) {
+    float length = sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
 
-// Fonction pour l'animation (le paramètre est obligatoire pour lancer glutTimerFunc)
+    if (length != 0.0) {
+        vec.x /= length;
+        vec.y /= length;
+        vec.z /= length;
+    }
+}
+
+void rotation() {
+    Point pt1 = ptsCourbe[indexPoint];
+    // Si on arrive à la fin du circuit, on revient au début
+    if(indexPoint == ptsCourbe.size()-1) {
+        indexPoint = -1;
+    }
+    Point pt2 = ptsCourbe[indexPoint+1];
+    Point directionVector = {pt2.x - pt1.x, pt2.y - pt1.y, pt2.z - pt1.z};
+    normalizeVector(directionVector);
+
+    float angle = acos(directionVector.z / sqrt(directionVector.x * directionVector.x + directionVector.y * directionVector.y + directionVector.z * directionVector.z)) * 180 / M_PI;
+    Point axis = {-directionVector.y, directionVector.x, 0};
+    angleRotationChariot = angle;
+    chariotRotationX = axis.x;
+    chariotRotationY = axis.y;
+    chariotRotationZ = axis.z;
+}
+
+void camera() {
+    
+}
+
 //----------------------------------------------------------------------------------
 void animation(int numTimer) {
 //----------------------------------------------------------------------------------
-    int temps = 1000;  // Le temps que va mettre l'animation à afficher la prochaine frame (possible à recalculer)
+    int temps = 10;  // Le temps que va mettre l'animation à afficher la prochaine frame (possible à recalculer)
 
     
     //**********************************************************************
     // Traitement pour l'animation
     //**********************************************************************
-
-    
-
-
+    indexPoint++;
+    ptCentreChariot = {ptsCourbe[indexPoint].x,ptsCourbe[indexPoint].y,ptsCourbe[indexPoint].z};
+    rotation();
+    camera();
 
 
     cout << "Fonction animation lancée" << endl;
@@ -175,6 +210,7 @@ int main(int argc,char **argv)
 
       /* initialisation de glut et creation
          de la fenetre */
+    srand((unsigned)time(NULL));
     glutInit(&argc,argv);
     glutInitDisplayMode(GLUT_RGB);
     glutInitWindowPosition(200,200);
@@ -242,8 +278,9 @@ void affichage(void)
         // Place un cube de test
         glPushMatrix();
             glTranslatef(ptCentreChariot.x, ptCentreChariot.y, ptCentreChariot.z);
+            glRotatef(angleRotationChariot,chariotRotationX,chariotRotationY,chariotRotationZ);
             cube.construire();
-            courbe1.construire();
+            //courbe1.construire();
             //courbe2.construire();
             //courbe3.construire();
             //courbe4.construire();
