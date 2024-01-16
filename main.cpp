@@ -359,6 +359,12 @@ void affichage(void)
             //courbe5.construire();
         glPopMatrix();
         
+		
+		// Construction des rails
+        glPushMatrix();
+            rail->construire();
+        glPopMatrix();
+
         // Construction chariot
         glPushMatrix();
             glTranslatef(ptCentreChariot.x, ptCentreChariot.y, ptCentreChariot.z);
@@ -366,11 +372,7 @@ void affichage(void)
             chariot.construire();
         glPopMatrix();
         
-        // Construction des rails
-        glPushMatrix();
-            rail->construire();
-        glPopMatrix();
-
+        
     //--------------------------------
 
     glPopMatrix();
