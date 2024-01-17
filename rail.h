@@ -17,19 +17,18 @@ using namespace std;
 class Rail {
 public:
     Rail();
-    Rail(double tubeRadius, double spaceBetweenRails, const std::vector<Point>curvePoints);
-    void drawRail(double radius, int numSides);
+    Rail(float tubeRadius, float spaceBetweenRails, const std::vector<Point>curvePoints);
     void construire();
     void setPoints(const std::vector<Point> curvePoints);
-    void setTubeRadius(double tubeRadius);
-    void setSpaceBetweenRails(double spaceBetweenRails);
+    void setTubeRadius(float tubeRadius);
+    void setSpaceBetweenRails(float spaceBetweenRails);
 
 private:
-    double tubeRadius;
-    double spaceBetweenRails;
+    float tubeRadius;
+    float spaceBetweenRails;
     std::vector<Point> curvePoints;
-
-    void drawCylinderBetweenPoints(Point p1, Point p2, double radius, int numSides, float r, float g, float b);
+    void drawRail(float radius, int numSides);
+    void drawCylinderBetweenPoints(Point p1, Point p2, float radius, int numSides, float r, float g, float b);
 
     
 };
