@@ -138,10 +138,14 @@ void initOpenGl()
 	glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
     GLfloat l_pos[] = { 3.,3.5,3.0,1.0 };
+    GLfloat a_color[] = { 1.,1.,1.,1.0 };
+    GLfloat d_color[] = { 1.,1.,1.,1.0 };
+    GLfloat s_color[] = { 1.,1.,1.0,1.0 };
+    
     glLightfv(GL_LIGHT0,GL_POSITION,l_pos);
-
-     glLightfv(GL_LIGHT0,GL_DIFFUSE,l_pos);
-     glLightfv(GL_LIGHT0,GL_SPECULAR,l_pos);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, a_color);
+    glLightfv(GL_LIGHT0,GL_DIFFUSE,d_color);
+    glLightfv(GL_LIGHT0,GL_SPECULAR,s_color);
  
      // glDepthFunc(GL_LESS);
      glEnable(GL_DEPTH_TEST);
@@ -351,6 +355,7 @@ void affichage(void)
 	glMatrixMode(GL_MODELVIEW);
     /* effacement de l'image avec la couleur de fond */
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glShadeModel(GL_SMOOTH);
 	glPushMatrix();
     if(!etatPov){
         gluLookAt(0.,0.,4., 0.,0.,0., 0.,1.,0.);
