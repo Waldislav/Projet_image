@@ -153,7 +153,7 @@ void initOpenGl()
 	glMatrixMode(GL_MODELVIEW);
 	//glLoadIdentity();	
     //	glScalef(.7,.7,.7);
-    gluLookAt(0.,0.,4., 0.,0.,0., 0.,1.,0.);
+    //gluLookAt(0.,0.,4., 0.,0.,0., 0.,1.,0.);
     //  glTranslatef(0.0,0.0,-5.0);
 }
 
@@ -348,6 +348,7 @@ void affichage(void)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glPushMatrix();
     if(!etatPov){
+        gluLookAt(0.,0.,4., 0.,0.,0., 0.,1.,0.);
         glTranslatef(0,0,cameraDistance);
         glRotatef(cameraAngleX,1.,0.,0.);
         glRotatef(cameraAngleY,0.,1.,0.);
