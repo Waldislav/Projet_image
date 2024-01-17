@@ -37,6 +37,8 @@ float mouseX, mouseY;
 float cameraAngleX;
 float cameraAngleY;
 float cameraDistance=0.;
+Point regardeCam;
+bool etatPov=false;
 
 bool quitteAnim=true;
 
@@ -141,7 +143,7 @@ void initOpenGl()
      glLightfv(GL_LIGHT0,GL_SPECULAR,l_pos);
  
      // glDepthFunc(GL_LESS);
-     // glEnable(GL_DEPTH_TEST);
+     glEnable(GL_DEPTH_TEST);
      glEnable(GL_COLOR_MATERIAL);
     glEnable(GL_NORMALIZE);
 
@@ -166,16 +168,24 @@ void normalizeVector(Point vec) {
 }
 
 void rotation() {
+    // Récupération de deux points sur la courbe
     Point pt1 = ptsCourbe[indexPoint];
     // Si on arrive à la fin du circuit, on revient au début
     if(indexPoint == ptsCourbe.size()-1) {
         indexPoint = -1;
     }
     Point pt2 = ptsCourbe[indexPoint+1];
+    
+    // Calcul du vecteur de direction du chariot avec deux points sur la courbe
     Point directionVector = {pt2.x - pt1.x, pt2.y - pt1.y, pt2.z - pt1.z};
     normalizeVector(directionVector);
+    
+    //Calcul d'un point lointain suivant la direction du trajet pour que la caméra la regarde
+    regardeCam = {pt1.x+(directionVector.x*54), pt1.y+(directionVector.y*54) + 1.5f, pt1.z+(directionVector.z*54)};
 
+    // Calcul de l'angle
     float angle = acos(directionVector.z / sqrt(directionVector.x * directionVector.x + directionVector.y * directionVector.y + directionVector.z * directionVector.z)) * 180 / M_PI;
+    // Parralèle au vecteur de direction
     Point axis = {-directionVector.y, directionVector.x, 0};
     angleRotationChariot = angle;
     chariotRotationX = axis.x;
@@ -268,7 +278,7 @@ void animation(int value) {
     glutTimerFunc(16, animation, value + 1 );
     glutPostRedisplay();
     // QuitteAnim permet de vérifier si on relance la fonction animation ou pas
-    if(!quitteAnim) glutTimerFunc(16, animation, 0 );
+    if(!quitteAnim) glutTimerFunc(16, animation, value + 1);
 }
 
 
@@ -281,7 +291,7 @@ int main(int argc,char **argv)
          de la fenetre */
     srand((unsigned)time(NULL));
     glutInit(&argc,argv);
-    glutInitDisplayMode(GLUT_RGB);
+    glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH);
     glutInitWindowPosition(200,200);
     glutInitWindowSize(600,600);
     glutCreateWindow("Montagne russe");
@@ -335,23 +345,28 @@ void affichage(void)
 {
 	glMatrixMode(GL_MODELVIEW);
     /* effacement de l'image avec la couleur de fond */
-	glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glPushMatrix();
-	glTranslatef(0,0,cameraDistance);
-    glRotatef(cameraAngleX,1.,0.,0.);
-    glRotatef(cameraAngleY,0.,1.,0.);
+    if(!etatPov){
+        glTranslatef(0,0,cameraDistance);
+        glRotatef(cameraAngleX,1.,0.,0.);
+        glRotatef(cameraAngleY,0.,1.,0.);
+    } else {
+        gluLookAt(ptCentreChariot.x,ptCentreChariot.y+1, ptCentreChariot.z,  // Position de la caméra
+                  regardeCam.x,regardeCam.y, regardeCam.z,  // Point de vue de la caméra
+                  0.0f, 1.0f, 0.0f);
+    }
     //--------------------------------
     affiche_repere();
     //--------------------------------
     // Construction de nos objets
     //--------------------------------
-
+    courbe1.construire();
         // Place un cube de test
         glPushMatrix();
             glTranslatef(ptCentreChariot.x, ptCentreChariot.y, ptCentreChariot.z);
-            courbe1.construire();
             glRotatef(angleRotationChariot,chariotRotationX,chariotRotationY,chariotRotationZ);
-            cube.construire();
+            //cube.construire();
             //courbe1.construire();
             //courbe2.construire();
             //courbe3.construire();
@@ -410,6 +425,14 @@ void clavier(unsigned char touche,int x,int y)
     case 'a' : //* Lance l'animation
         quitteAnim = !quitteAnim;
         if(!quitteAnim) glutTimerFunc(1, animation, 1);
+        glutPostRedisplay();
+        break;
+    case 'v' :
+            etatPov = false;
+            glutPostRedisplay();
+            break;
+    case 'c' :
+        etatPov = true;
         glutPostRedisplay();
         break;
     case 'q' : //*la touche 'q' permet de quitter le programme
