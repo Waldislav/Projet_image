@@ -41,6 +41,7 @@ Point regardeCam;
 bool etatPov=false;
 
 bool quitteAnim=true;
+int valeur=1;
 
 /*   Déjà inclut dans cube.h
 
@@ -209,8 +210,11 @@ void animation(int value) {
 
     // Déplacement du chariot sur la courbe en prenant en compte la gravité
     if(value >= ptsCourbe.size() - 3) {
-        return;
+        //return;
+        value=0;
+        valeur=0;
     }
+    
 
     // Calcul du vecteur tangente à la courbe
     float tx = 3*pow(1-t, 2)*(ptsCourbe[value+1].x-ptsCourbe[value].x) + 6*t*(1-t)*(ptsCourbe[value+2].x-ptsCourbe[value+1].x) + 3*pow(t, 2)*(ptsCourbe[value+3].x-ptsCourbe[value+2].x);
@@ -268,14 +272,15 @@ void animation(int value) {
 
     indexPoint++;
     //ptCentreChariot = {ptsCourbe[indexPoint].x,ptsCourbe[indexPoint].y,ptsCourbe[indexPoint].z};
-    rotation();
+    //rotation();
     camera();
 
 
     cout << "Fonction animation lancée" << endl;
+    valeur = value+1;
     
     //**********************************************************************
-    glutTimerFunc(16, animation, value + 1 );
+    //glutTimerFunc(16, animation, value + 1 );
     glutPostRedisplay();
     // QuitteAnim permet de vérifier si on relance la fonction animation ou pas
     if(!quitteAnim) glutTimerFunc(16, animation, value + 1);
@@ -309,7 +314,7 @@ int main(int argc,char **argv)
     
     initOpenGl() ;
 
-    glutTimerFunc(16, animation, 0); // commence l'animation
+    //glutTimerFunc(16, animation, 0); // commence l'animation
 
     /* Entree dans la boucle principale glut */
     glutMainLoop();
@@ -362,6 +367,7 @@ void affichage(void)
     //--------------------------------
     // Construction de nos objets
     //--------------------------------
+    rotation();
     courbe1.construire();
         // Place un cube de test
         glPushMatrix();
@@ -425,7 +431,7 @@ void clavier(unsigned char touche,int x,int y)
       break;
     case 'a' : //* Lance l'animation
         quitteAnim = !quitteAnim;
-        if(!quitteAnim) glutTimerFunc(1, animation, 1);
+        if(!quitteAnim) glutTimerFunc(1, animation, valeur);
         glutPostRedisplay();
         break;
     case 'v' :

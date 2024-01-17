@@ -19,11 +19,11 @@ std::vector<Point>  CourbeBezier::generateCurvePoints()
     
    
     // Générer les points de la courbe tous les 0.01 
-    for (size_t i = 0; i < controlPoints.size() - 3; ++i) {
-        const auto& p1 = controlPoints[i];
-        const auto& p2 = controlPoints[i + 1];
-        const auto& p3 = controlPoints[i + 2];
-        const auto& p4 = controlPoints[i + 3];
+    for (int i = 0; i < controlPoints.size() - 3; ++i) {
+        const Point p1 = controlPoints[i];
+        const Point p2 = controlPoints[i + 1];
+        const Point p3 = controlPoints[i + 2];
+        const Point p4 = controlPoints[i + 3];
 
         for (float t = 0.0; t < 1.0; t += 0.01) {
             float x = 0.5 * ((2 * p2.x) + (-p1.x + p3.x) * t + (2 * p1.x - 5 * p2.x + 4 * p3.x - p4.x) * pow(t, 2) + (-p1.x + 3 * p2.x - 3 * p3.x + p4.x) * pow(t, 3));
