@@ -14,23 +14,37 @@
 //using namespace arma;
 using namespace std;
 
-float calculateDistance(Point p1, Point p2) {
+/**
+ * Calcule la distance entre deux points
+*/
+float calculateDistance(Point p1, Point p2) 
+{
     float distance = sqrt(pow(p2.x - p1.x, 2) + pow(p2.y - p1.y, 2) + pow(p2.z - p1.z, 2));
     return distance;
 }
 
+/**
+ * Constructeur de la classe Rail avec paramètres
+*/
 Rail::Rail(float tubeRadius, float spaceBetweenRails, const std::vector<Point> curvePoints)
-    : tubeRadius(tubeRadius), spaceBetweenRails(spaceBetweenRails), curvePoints(curvePoints) {}
+{
+    this->tubeRadius = tubeRadius;
+    this->spaceBetweenRails = spaceBetweenRails;
+    this->curvePoints = curvePoints;
+}
 
-Rail::Rail() {
+/**
+ * Constructeur de la classe Rail sans paramètres
+*/  
+Rail::Rail() 
+{
     tubeRadius = 0.09;
     spaceBetweenRails = 0.40;
 }
 
 
-void Rail::drawRail(float radius, int numSides) {
-
-
+void Rail::drawRail(float radius, int numSides) 
+{
 
     // Couleur gris métallique
     float r = 120 / 255.0;
@@ -92,7 +106,8 @@ void Rail::drawRail(float radius, int numSides) {
 /**
  * Dessine un cylindre entre deux points
 */
-void Rail::drawCylinderBetweenPoints(Point p1, Point p2, float radius, int numSides, float r, float g, float b) {
+void Rail::drawCylinderBetweenPoints(Point p1, Point p2, float radius, int numSides, float r, float g, float b) 
+{
     // Calcul de la longueur du cylindre
     float length = sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y) + (p2.z - p1.z) * (p2.z - p1.z));
 
@@ -104,8 +119,8 @@ void Rail::drawCylinderBetweenPoints(Point p1, Point p2, float radius, int numSi
     float dz = p2.z - p1.z;
 
     // Calcul des angles
-    float theta = atan2(dy, dx);
-    float phi = acos(dz / length);
+    float angleYX = atan2(dy, dx);
+    float angleZ = acos(dz / length);
 
     glColor3f(r, g, b);
     glPushMatrix();
@@ -115,10 +130,10 @@ void Rail::drawCylinderBetweenPoints(Point p1, Point p2, float radius, int numSi
     glTranslatef(p1.x, p1.y, p1.z);
 
     // Rotation pour aligner le cylindre avec la direction entre les deux points
-    glRotatef(theta * 180.0 / PI, 0.0, 0.0, 1.0);
-    glRotatef(phi * 180.0 / PI, 0.0, 1.0, 0.0);
+    glRotatef(angleYX * 180.0 / PI, 0.0, 0.0, 1.0);
+    glRotatef(angleZ * 180.0 / PI, 0.0, 1.0, 0.0);
 
-    // Dessiner le cylindre
+    // Dessin du cylindre sous forme de quadrilatères
     glBegin(GL_QUAD_STRIP);
     for (int i = 0; i <= numSides; ++i) {
         float angle = 2.0 * PI * i / numSides;
@@ -137,18 +152,37 @@ void Rail::drawCylinderBetweenPoints(Point p1, Point p2, float radius, int numSi
 /**
  * Lance la construction du rail
 */
-void Rail::construire() {
+void Rail::construire() 
+{
     drawRail(tubeRadius, 8);
 }
 
-void Rail::setPoints(const std::vector<Point> curvePoints) {
+///////// SETTERS /////////
+
+/**
+ * Définit les points de la courbe à suivre
+*/
+void Rail::setPoints(const std::vector<Point> curvePoints) 
+{
     this->curvePoints = curvePoints;
 }
 
-void Rail::setTubeRadius(float tubeRadius) {
+/**
+ * Définit le rayon du cylindre
+*/
+void Rail::setTubeRadius(float tubeRadius) 
+{
     this->tubeRadius = tubeRadius;
 }
 
-void Rail::setSpaceBetweenRails(float spaceBetweenRails) {
+/**
+ * Définit l'espace entre les rails
+*/
+void Rail::setSpaceBetweenRails(float spaceBetweenRails) 
+{
     this->spaceBetweenRails = spaceBetweenRails;
 }
+
+//////////////////
+
+
